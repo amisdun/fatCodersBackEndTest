@@ -1,0 +1,28 @@
+# docker-compose.yml
+
+version: "3"
+services:
+  api_dev:
+    build: ./
+    command: sh -c "yarn install && yarn run db:migrate && yarn run start"
+    ports:
+      - 8081:8081
+    working_dir: /app
+    volumes:
+      - ./:/app
+    depends_on:
+      - db
+  db:
+    image: postgres
+    container_name: postgres_data
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_DB=fatcoders
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+volumes:
+  postgres_data:
