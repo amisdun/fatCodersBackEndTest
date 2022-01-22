@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"description": "",
 	"scripts": {
-		"start": "nodemon ./bin/www.js npx eslint .",
+		"start": "nodemon ./bin/www.js",
 		"db:create:migration": "npx sequelize-cli --name add_column_to_farm_unit migration:create",
 		"db:migrate": "npx sequelize-cli db:migrate",
 		"lint": "npx eslint .",
