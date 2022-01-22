@@ -12,5 +12,8 @@ app.use(bodyParser.raw({ type: "*/*" }));
 app.use(bodyParser.text({ type: "*/*" }));
 app.use(cors());
 app.use("/v1", routers);
+app.use("/", (request, response) => {
+	response.json({ message: "hey!!! Fat Cat Coder" });
+});
 
 module.exports = app;
