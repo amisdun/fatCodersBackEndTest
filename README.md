@@ -14,7 +14,7 @@ POSTGRES_HOST=172.20.0.1
 ### Running app
 ```
 Run the following commands to start the up
-sudo docker-compose up --build 
+$ sudo docker-compose up --build 
  1. Open your web browser and type http://localhost:8081/ to see the application
 ```
 ### Lints and Bug fixes 
