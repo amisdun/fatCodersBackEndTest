@@ -1,0 +1,11 @@
+{
+	"healthPoint": {
+		"min": 50,
+		"max": 100
+	},
+	"interval": {
+		"farmUnitInterval": 10,
+		"farmBuildInterval": 60
+	},
+	"feedingSpace": 5
+}
