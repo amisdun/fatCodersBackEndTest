@@ -1,6 +1,6 @@
 # docker-compose.yml
 
-version: "3"
+version: '3'
 services:
   api_dev:
     build: ./
@@ -15,11 +15,6 @@ services:
   db:
     image: postgres
     container_name: postgres_data
-    environment:
-      - POSTGRES_USER=user
-      - POSTGRES_DB=fatcoders
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
