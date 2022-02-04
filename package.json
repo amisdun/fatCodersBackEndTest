@@ -1,38 +1,39 @@
 {
-	"name": "fatcoders",
-	"version": "1.0.0",
-	"description": "",
-	"scripts": {
-		"start": "nodemon ./bin/www.js",
-		"db:create:migration": "npx sequelize-cli --name add_column_to_farm_unit migration:create",
-		"db:migrate": "npx sequelize-cli db:migrate",
-		"lint": "npx eslint .",
-		"lint:fix": "npx eslint . --fix"
-	},
-	"author": "",
-	"license": "ISC",
-	"dependencies": {
-		"body-parser": "^1.19.1",
-		"cors": "^2.8.5",
-		"date-fns": "^2.28.0",
-		"dotenv": "^14.2.0",
-		"eslint-config-airbnb-base": "^15.0.0",
-		"eslint-config-prettier": "^8.3.0",
-		"eslint-plugin-import": "^2.25.4",
-		"eslint-plugin-prettier": "^4.0.0",
-		"express": "^4.17.2",
-		"express-validator": "^6.14.0",
-		"global": "^4.4.0",
-		"nodemon": "^2.0.15",
-		"pg": "^8.7.1",
-		"pg-hstore": "^2.3.4",
-		"prettier": "^2.5.1",
-		"random": "^3.0.6",
-		"sequelize": "^6.13.0",
-		"sequelize-cli": "^6.4.1",
-		"tasktimer": "^3.0.0"
-	},
-	"devDependencies": {
-		"eslint": "^8.7.0"
-	}
+  "name": "fatcoders",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node --experimental-modules --es-module-specifier-resolution=node ./bin/www",
+    "db:create:migration": "npx sequelize-cli --name add_column_to_farm_unit migration:create",
+    "db:migrate": "npx sequelize-cli db:migrate",
+    "lint": "npx eslint .",
+    "lint:fix": "npx eslint . --fix"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "cors": "^2.8.5",
+    "date-fns": "^2.28.0",
+    "dotenv": "^14.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-prettier": "^4.0.0",
+    "express": "^4.17.2",
+    "express-validator": "^6.14.0",
+    "global": "^4.4.0",
+    "pg": "^8.7.1",
+    "pg-hstore": "^2.3.4",
+    "prettier": "^2.5.1",
+    "random": "^3.0.6",
+    "sequelize": "^6.13.0",
+    "sequelize-cli": "^6.4.1",
+    "tasktimer": "^3.0.0",
+    "nodemon": "^2.0.15"
+  },
+  "devDependencies": {
+    "eslint": "^8.7.0"
+  }
 }
