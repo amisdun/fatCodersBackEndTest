@@ -9,6 +9,7 @@ const listFarmUnitsLinkedToFarmBuilding = async (id) => {
     const farmBuilding = await FarmBuilding.findByPk(id, {
       include: FarmUnits,
       transaction: t,
+      skipLocked: true,
     });
     return farmBuilding.toJSON();
   });

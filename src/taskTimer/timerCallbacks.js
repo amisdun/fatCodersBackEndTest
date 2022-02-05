@@ -2,36 +2,42 @@ import { FarmUnits } from '../models/farmUnits';
 import { farmUnitTimer, farmBuildingTimer } from './taskTimer';
 import defaultValue from '../config/intervalPointConfig.json';
 import { sequelize } from '../models/index';
-import { Transaction } from 'sequelize';
 
 const processTimerCallBackForFarmUnit = async (id) => {
   const newTask = {
     id: `UNIT-${id}`,
     tickInterval: defaultValue.interval.farmUnitInterval,
     async callback(task) {
-      await sequelize.transaction(
-        { isolationLevel: Transaction.ISOLATION_LEVELS.SERIALIZABLE },
-        async (t) => {
-          const unitId = task.id?.slice(5);
-          const farmUnit = await FarmUnits.findByPk(parseInt(unitId), {
-            transaction: t,
-          });
-          if (farmUnit.status === 'dead') {
-            return;
-          }
-          if (farmUnit.remainingHealthPoint > 0) {
-            const newHealthPoint = farmUnit.remainingHealthPoint - 1;
-            const newLostJob = farmUnit.lostPointsInLastPastSixtySec + 1;
-            farmUnit.lostPointsInLastPastSixtySec = newLostJob;
-            farmUnit.remainingHealthPoint = newHealthPoint;
-            farmUnit.save();
-          }
-          if (farmUnit.remainingHealthPoint <= 0) {
-            farmUnit.status = 'dead';
-            farmUnit.save();
-          }
-        },
-      );
+      await sequelize.transaction(async (t) => {
+        const unitId = task.id?.slice(5);
+        const farmUnit = await FarmUnits.findByPk(parseInt(unitId), {
+          transaction: t,
+        });
+        if (farmUnit.status === 'dead') {
+          return;
+        }
+        if (farmUnit.remainingHealthPoint > 0) {
+          const newHealthPoint = farmUnit.remainingHealthPoint - 1;
+          const newLostJob = farmUnit.lostPointsInLastPastSixtySec + 1;
+          const lostPointsInLastPastSixtySec = newLostJob;
+          const remainingHealthPoint = newHealthPoint;
+          await FarmUnits.update(
+            {
+              lostPointsInLastPastSixtySec,
+              remainingHealthPoint,
+            },
+            { where: { id: parseInt(unitId) }, transaction: t },
+          );
+        }
+        if (farmUnit.remainingHealthPoint <= 0) {
+          const status = 'dead';
+          await FarmUnits.update(
+            { status },
+            { where: { id: parseInt(unitId) }, transaction: t },
+          );
+          farmUnit.save();
+        }
+      });
     },
   };
   farmUnitTimer.add(newTask).start();
@@ -45,18 +51,20 @@ const processTimerCallBackForFarmBuilding = (id) => {
     tickInterval: defaultValue.interval.farmBuildInterval,
     async callback(task) {
       const buildId = task.id?.slice(6);
-      await sequelize.transaction(
-        { isolationLevel: Transaction.ISOLATION_LEVELS.SERIALIZABLE },
-        async (t) => {
-          await FarmUnits.update(
-            { lostPointsInLastPastSixtySec: 0 },
-            {
-              where: { farmBuildingId: parseInt(buildId), status: 'alive' },
-              transaction: t,
-            },
-          );
-        },
-      );
+      await sequelize.transaction(async (t) => {
+        await FarmUnits.findOne({
+          where: { farmBuildingId: parseInt(buildId), status: 'alive' },
+          transaction: t,
+          lock: t.LOCK.UPDATE,
+        });
+        await FarmUnits.update(
+          { lostPointsInLastPastSixtySec: 0 },
+          {
+            where: { farmBuildingId: parseInt(buildId), status: 'alive' },
+            transaction: t,
+          },
+        );
+      });
     },
   };
   farmBuildingTimer.add(newTask).start();

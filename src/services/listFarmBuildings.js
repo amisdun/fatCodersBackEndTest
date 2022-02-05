@@ -5,6 +5,7 @@ const listFarmBuilding = async () => {
   const result = await sequelize.transaction(async (t) => {
     const farmBUildings = await FarmBuilding.findAll({
       transaction: t,
+      skipLocked: true,
     });
     return farmBUildings;
   });
