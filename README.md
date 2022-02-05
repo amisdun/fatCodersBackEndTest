@@ -12,14 +12,13 @@ POSTGRES_HOST_AUTH_METHOD=trust
 POSTGRES_HOST=172.20.0.1
 
 Navigate into the config.json file found inside src/config, and set the following in development
-```
+
 "username": "user",
 "password": "password",
 "database": "fatcoders",
 "host": "172.20.0.1",
 "dialect": "postgres"
 
-```
 
 ```
 ### Running app
