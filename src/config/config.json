@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "",
-    "password": "",
-    "database": "",
-    "host": "",
+    "username": "user",
+    "password": "password",
+    "database": "fatcoders",
+    "host": "172.20.0.1",
     "dialect": "postgres"
   },
   "test": {

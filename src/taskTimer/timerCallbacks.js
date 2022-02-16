@@ -12,6 +12,7 @@ const processTimerCallBackForFarmUnit = async (id) => {
         const unitId = task.id?.slice(5);
         const farmUnit = await FarmUnits.findByPk(parseInt(unitId), {
           transaction: t,
+          lock: t.LOCK.UPDATE
         });
         if (farmUnit.status === 'dead') {
           return;
